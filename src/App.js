@@ -1,4 +1,6 @@
 const axios = require('axios');
+//Axios es una biblioteca que facilita las solicitudes HTTP en JavaScript
+//tanto en navegadores como en entornos de servidor (Node.js). 
 
 // Nombre del Pokémon que deseas obtener
 const nombrePokemon = 'pikachu';
@@ -24,3 +26,6 @@ axios.get(apiUrl)
   .catch(error => {
     console.error('Error al obtener datos del Pokémon:', error);
   });
+
+
+  // hace lo mismo que hace el codigo escrito en el html pero de una manera mas simple, es solo mi experimento jeje

@@ -22,37 +22,61 @@
 </html>
 
 <script>
+//DOMContentLoaded esd un evento que nos permite ejecutar este codigo una ves que todos los elementos html haya cargado.
   document.addEventListener('DOMContentLoaded', function () {
-  const pokemonInput = document.getElementById('pokemonInput');
+  
+    //declaracion de variables para obtener elementos HTML del DOM(document object model).
+    const pokemonInput = document.getElementById('pokemonInput');
   const searchButton = document.getElementById('searchButton');
   const nombrePokemon = document.getElementById('nombre');
   const idPokemon = document.getElementById('id');
   const tiposPokemon = document.getElementById('tipos');
   const imagenPokemon = document.getElementById('pokemonImage');
 
+  //function para el boton de busqueda, solo sirve con el evento on click.
   searchButton.addEventListener('click', function () {
+
+
+    //crea la variable nombre que manda a traer la cadena de caracteres del input.
+    // ".trim()" es para eliminar espacios en blanco al inicio y final de la cadena.
     const nombre = pokemonInput.value.trim();
     if (nombre) {
       buscarPokemon(nombre);
     }
   });
 
+  //funcion para buscar al pokemon en la API.
   function buscarPokemon(nombre) {
+
+    //La URL base de la API de Pokémon es https://pokeapi.co/api/v2/pokemon/. 
+    //Luego, se agrega el nombre del Pokémon a la URL utilizando ${nombre}.
+    //la url funciona despues de usar eso quedaria como  "https://pokeapi.co/api/v2/pokemon/pikachu" por ejemplo xd
+    //la almacenamos en una variable 
     const apiUrl = `https://pokeapi.co/api/v2/pokemon/${nombre}`;
 
+    //creamos una solucitud a la API  con fetch
     fetch(apiUrl)
+       //manejamos la respuesta con el ".then"  y se prosesa como datos json.
+       //  se transforma en un objeto con el ".json()".
       .then((response) => response.json())
+      //segundo metodo para llamar a informacion de la api con "data".
       .then((data) => {
+
+        //".textContent" actualiza el nombre que se encuentra dentro de la variable 
         nombrePokemon.textContent = data.name;
         idPokemon.textContent = data.id;
+        //limpia los tipos de pokemon con ".innerHTML = ' '" para no hacer mezcolanzas 
         tiposPokemon.innerHTML = '';
+
+        //crea elementos de lista por medio de iteracion, (para poder imprimir todos sus tipos en dado caso de tener mas de 1).
         data.types.forEach((tipo) => {
           const li = document.createElement('li');
           li.textContent = tipo.type.name;
           tiposPokemon.appendChild(li);
         });
 
-        // Configura la imagen del Pokémon
+        // Configura la imagen del Pokémon.
+        //llama a la direccion del sprite de los pokemon de la API, por medio del objeto data de la API.
         imagenPokemon.src = data.sprites.front_default;
       })
       .catch((error) => {
